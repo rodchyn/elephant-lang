@@ -1,0 +1,21 @@
+{
+    "name": "rodchyn/elephant-lang",
+    "type": "library",
+    "description": "Sugar syntax for PHP language",
+    "keywords": ["syntax", "language"],
+    "homepage": "http://elephant-lang.org",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yura Rodchyn",
+            "email": "rodchyn@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3"
+    },
+    "autoload": {
+        "psr-0": {"ElephantLang\\": "src/"},
+        "files": ["autoload.php"]
+    }
+}
