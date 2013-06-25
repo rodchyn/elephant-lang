@@ -11,21 +11,8 @@ namespace ElephantLang;
 
 
 class Rewriter {
-
-    private $filePath;
-
-    public function __construct($filePath)
+    public function rewrite($content)
     {
-        $this->filePath = $filePath;
-    }
-
-    public function save()
-    {
-        file_put_contents($this->filePath, '<?php
-        namespace Elephant;
-
-        class ClassName {
-        }
-        ');
+        return '';
     }
 }
