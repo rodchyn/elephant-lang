@@ -1,0 +1,15 @@
+# Namespace
+namespace rodchyn/elephant/test
+
+use rodchyn/elephant/parser
+
+class TestClass
+    yura = 'Yura Rodchyn'
+
+    a( @variable ) ->
+        @variable + 'This is a text'
+
+    b() ->
+        hello "people"
+
+hello()
