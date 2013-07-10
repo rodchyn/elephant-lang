@@ -34,6 +34,7 @@ class SimpleLangLexer extends Regexer
         $this->addAfterProcessing('STRING_DOUBLE', function($token){ $token->value = trim($token->value, '"'); });
         $this->addAfterProcessing('INDENT', function($token){ $token->value = preg_replace('/\n/', '', $token->value); });
         $this->addAfterProcessing('CLASS', function($token){$token->value = preg_replace('/^class\s+/', '', $token->value); });
+        $this->addAfterProcessing('NAMESPACE', function($token){$token->value = preg_replace('/^namespace\s+/', '', $token->value); });
         $this->purgeUnimportantSymbol('WHITESPACE');
     }
 
