@@ -20,7 +20,7 @@ function init()
 
 function make()
 {
-  require 'vendor/ParserGenerator/ParserGenerator.php';
+  require 'lib/ParserGenerator/ParserGenerator.php';
 
   $source = 'parser.y';
   $target = 'src/ElephantLang/Parser.php';

@@ -1,6 +1,6 @@
 <?php
 
-use ElephantLang\SimpleLangLexer;
+use ElephantLang\Lexer;
 use ElephantLang\Parser;
 
 class LexerTest extends \PHPUnit_Framework_TestCase
@@ -10,15 +10,25 @@ class LexerTest extends \PHPUnit_Framework_TestCase
     {	
         $example = file_get_contents(dirname(__FILE__) . '/test.elph');
 
-        $lexer = new SimpleLangLexer();
-        $parser = new Parser($lexer);
-        $lexer->tokenizeAll($example);
+        try {
+            $lexer = new Lexer();
+            $parser = new Parser($lexer);
+            //Parser::Trace(fopen('php://output', 'w'), 'Trace: ');
+            $lexer->tokenizeAll($example);
 
-        foreach($lexer->tokens as $token) {
-            echo "Parsing  {$token->symbol} Token {$token->value} \n";
-            $parser->parse($token);
+            foreach($lexer->tokens as $token) {
+                echo "Parsing {$token->symbol} Token {$token->value} \n";
+                $parser->parse($token);
+            }
+
+            $parser->parse(null);
+
+        } catch (\Exception $e) {
+            echo $e->getMessage();
         }
-        $parser->parse($token);
+
+        $lexer->debugPrintReport();
+
 
         die( "Returnvalue: ".$parser->retvalue."\n" );
     }

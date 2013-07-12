@@ -21,7 +21,7 @@ class Token implements \ArrayAccess
         $this->lineNumber = $lineNumber;
         $this->columnNumber = $columnNumber;
 
-        $this[0] = $symbol;
+        $this[0] = Parser::tokenNumberByName($symbol);
         $this[1] = $value;
         $this[2] = $lineNumber;
     }
