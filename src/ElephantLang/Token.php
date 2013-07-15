@@ -2,10 +2,13 @@
 
 namespace ElephantLang;
 
-define('TOKEN_OUTPUT_FORMAT', "%-4s %-3s %-7s %-14s %-s\n");
-
 class Token implements \ArrayAccess
 {
+    const TOKEN_OUTPUT_FORMAT = "%-4s %-3s %-7s %-14s %-s\n";
+
+    /**
+     * @var string
+     */
     public $symbol;
     public $metadata = array();
     public $value = null;
@@ -13,6 +16,13 @@ class Token implements \ArrayAccess
     public $lineNumber = null;
     public $columnNumber = null;
 
+    /**
+     * @param $symbol string
+     * @param $value
+     * @param $absolutePosition
+     * @param $lineNumber
+     * @param $columnNumber
+     */
     public function __construct($symbol, $value, $absolutePosition, $lineNumber, $columnNumber)
     {
         $this->symbol = $symbol;
@@ -52,14 +62,14 @@ class Token implements \ArrayAccess
 
     public static function debugPrintColumnHeadings()
     {
-        printf(TOKEN_OUTPUT_FORMAT, 'pos', 'len', 'lin/col', '', '');
+        printf(static::TOKEN_OUTPUT_FORMAT, 'pos', 'len', 'lin/col', '', '');
     }
 
     public function debugPrint()
     {
         $tokenLength = strlen($this->value);
         $value = self::debugEscapeNewlines($this->value);
-        printf(TOKEN_OUTPUT_FORMAT,
+        printf(static::TOKEN_OUTPUT_FORMAT,
             $this->absolutePosition,
             $tokenLength,
             $this->lineNumber . '/' . $this->columnNumber,
