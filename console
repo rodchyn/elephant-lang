@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+
+// console application
+
+require 'tests/bootstrap.php';
+
+use ElephantLang\Commands\BuildCommand;
+use ElephantLang\Commands\TestCommand;
+use Symfony\Component\Console\Application;
+
+$application = new Application();
+$application->add(new BuildCommand);
+$application->add(new TestCommand);
+$application->run();

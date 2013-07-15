@@ -18,7 +18,7 @@ class Regexer
                 $this->textLines=new TextLines($this->text);
                 $this->lexerPattern=$lexerPattern;
                 $this->findTokens();
-                $this->addEofToken();
+                //$this->addEofToken();
                 $this->findGaps();
         }
 
@@ -145,7 +145,7 @@ class Regexer
 
         static function debugPrintSectionTitle($sectionTitle)
         {
-                        echo "\n===$sectionTitle===\n\n";
+                        echo "\n\n===$sectionTitle===\n";
         }
 
         static function debugPrintTokens($sectionTitle,$tokens)
@@ -168,24 +168,25 @@ class Regexer
         function debugPrintReport()
         {
                 //show text
-                self::debugPrintSectionTitle('TEXT');
-                echo $this->text;
                 $textLength=strlen($this->text);
-                echo "length: $textLength\n";
-                echo "\n";
+                self::debugPrintSectionTitle("TEXT - length: $textLength");
+                echo $this->text;
+
+
 
                 //show lexer pattern
+                /*
                 self::debugPrintSectionTitle('LEXER PATTERN');
                 $pattern=$this->lexerPattern;
                 echo "$pattern\n";
                 $lexerPatternLength=strlen($pattern);
                 echo "length: $lexerPatternLength\n";
                 echo "\n";
-
+                */
                 //show tokens
                 self::debugPrintTokens('TOKENS',$this->tokens);
-
+                echo "\n\n";
                 //show gaps
-                self::debugPrintTokens('GAPS',$this->gaps);
+                //self::debugPrintTokens('GAPS',$this->gaps);
         }
 }
