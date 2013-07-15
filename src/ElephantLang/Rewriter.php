@@ -21,7 +21,6 @@ class Rewriter {
         $lexer->tokenizeAll($content);
 
         foreach($lexer->tokens as $token) {
-            //echo "Parsing {$token->symbol} Token {$token->value} \n";
             $parser->parse($token);
         }
 
