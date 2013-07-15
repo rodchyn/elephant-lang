@@ -45,17 +45,12 @@ class Lexer
         $this->purgeUnimportantSymbol('NEWLINE');
     }
 
-
-
     private function addAfterProcessing($symbol, $callback)
     {
         foreach($this->tokens as $token) {
             $callback($token);
         }
     }
-
-
-
 
     function findTokens()
     {

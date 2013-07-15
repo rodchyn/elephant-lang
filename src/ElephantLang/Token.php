@@ -38,7 +38,7 @@ class Token implements \ArrayAccess
         $this[2] = $lineNumber;
     }
 
-    public function getMatchSymbol($match)
+    public static function getMatchSymbol($match)
     {
         foreach ($match as $key => $value) {
             if (is_string($key) && $value[0] != '') return $key;
