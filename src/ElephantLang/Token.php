@@ -2,6 +2,8 @@
 
 namespace ElephantLang;
 
+use ElephantLang\Parser\Parser;
+
 class Token implements \ArrayAccess
 {
     const TOKEN_OUTPUT_FORMAT = "%-4s %-3s %-7s %-14s %-s\n";

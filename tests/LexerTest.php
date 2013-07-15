@@ -1,7 +1,7 @@
 <?php
 
 use ElephantLang\Lexer;
-use ElephantLang\Parser;
+use ElephantLang\Parser\Parser;
 
 class LexerTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,11 +25,9 @@ class LexerTest extends \PHPUnit_Framework_TestCase
 
         } catch (\Exception $e) {
             echo $e->getMessage();
+            $lexer->debugPrintReport();
         }
 
-        $lexer->debugPrintReport();
-
-
-        die( "Returnvalue: ".$parser->retvalue."\n" );
+        //die( "Returnvalue: ".$parser->retvalue."\n" );
     }
 }

@@ -31,7 +31,6 @@
     $this->successful = !$this->internalError;
     $this->internalError = false;
     $this->retvalue = $this->_retvalue;
-    echo "WORKED!!\n\n";
 }
 
 %syntax_error
@@ -46,35 +45,30 @@
         $expect[] = self::$yyTokenName[$token];
     }
     echo "\n";
-    echo "yyMajor = ";
-    var_dump($yymajor);
-    echo "\n";
     throw new \Exception('Unexpected ' . $this->tokenName($yymajor) . '(' . $TOKEN. '), expected one of: ' . implode(',', $expect));
 }
 
 %left PLUS MINUS.
 %left MULTIPLICATION DIVISION.
 %right AND_LITERAL.
-%right WHITESPACE.
+%right WHITESPACE NEWLINE CONCAT.
 
 start(res)       ::=                 . { res = yy('Block'); }
 
 start(res)       ::= expression(expr). { res = expr; }
 
-start(A) ::= body(B)                 . { A = B; }
-start(A) ::= block(B) NEWLINE  . { A = B; }
-
-body(A) ::= line(B)                       . { A = yy_Block::wrap(array(B)); }
-body(A) ::= body(B) NEWLINE line(C) . { A = B->push(C); }
-body(A) ::= body(B) NEWLINE         . { A = B; }
-
-block(A) ::= INDENT OUTDENT         . { A = yy('Block'); }
-block(A) ::= INDENT body(B) OUTDENT . { A = B; }
-
-line(A) ::= expression(B) . { A = B; }
-line(A) ::= statement(B)  . { A = B; }
-
 /* Unary minus or plus */
+
+statement(res)  ::= identifier(i) PLUS identifier(i2). { res = i . ' + ' . i2; }
+statement(res)  ::= NUMBER(i) PLUS identifier(i2). { res = i . ' + ' . i2; }
+statement(res)  ::= identifier(i) PLUS NUMBER(i2). { res = i . ' + ' . i2; }
+statement(res)  ::= NUMBER(i) PLUS NUMBER(i2). { res = i . ' + ' . i2; }
+
+statement(res)  ::= identifier(i) MINUS identifier(i2). { res = i . ' - ' . i2; }
+statement(res)  ::= NUMBER(i) MINUS identifier(i2). { res = i . ' - ' . i2; }
+statement(res)  ::= identifier(i) MINUS NUMBER(i2). { res = i . ' - ' . i2; }
+statement(res)  ::= NUMBER(i) MINUS NUMBER(i2). { res = i . ' - ' . i2; }
+
 expression(res)  ::= PLUS expression(e). { res = +e; }
 expression(res)  ::= MINUS expression(e). { res = -e; }
 
@@ -86,8 +80,8 @@ expression(res)  ::= expression(e1) AND_LITERAL statement(e2). { res = '( ' . e1
 expression(res)  ::= assign(a). { res = a; }
 expression(res)  ::= if(B)    . { res = B; }
 
-if(res)          ::= expression(e1) IF statement(s). { res = 'if (' . s . ') { ' . e1 . '; }'; }
-if(res)          ::= expression(e1) IF expression(e2). { res = 'if (' . e2 . ' ) { ' . e1 . '; } '; }
+if(res)          ::= expression(e1) IF statement(s). { res = 'if (' . s . ') { ' . e1 . ' }'; }
+if(res)          ::= expression(e1) IF expression(e2). { res = 'if (' . e2 . ') { ' . e1 . ' } '; }
 
 expression(res)  ::= expression(e) Q_ASSIGN expression(e2). { res = 'if ( empty(' . e . ') || !' . e . ' ) { ' . e . ' = ' . e2 .'; } '; }
 expression(res)  ::= statement(e) Q_ASSIGN statement(e2). { res = 'if ( empty(' . e . ') || !' . e . ' ) { ' . e . ' = ' . e2 .'; } '; }
@@ -95,6 +89,8 @@ expression(res)  ::= expression(e) Q_ASSIGN statement(e2). { res = 'if ( empty('
 expression(res)  ::= statement(e) Q_ASSIGN expression(e2). { res = 'if ( empty(' . e . ') || !' . e . ' ) { ' . e . ' = ' . e2 .'; } '; }
 
 
+assign(res)      ::= identifier(i) ASSIGN alphanumeric(n). { res = i . ' = ' . n; }
+assign(res)      ::= identifier(i) ASSIGN statement(s). { res = i . ' = ' . s; }
 
 /* The common stuff */
 expression(res)  ::= term(t). { res = t; }
@@ -106,17 +102,18 @@ term(res)        ::= factor(f). { res = f; }
 term(res)        ::= term(t1) MULTIPLICATION factor(f2). { res = t1*f2; }
 term(res)        ::= term(t1) DIVISION factor(f2). { res = t1/f2; }
 
-factor(res)      ::= string(s). { res = s; }
+//factor(res)      ::= string(s). { res = s; }
 factor(res)      ::= NUMBER(n). { res = n; }
 factor(res)      ::= OPENP expression(e) CLOSEP. { res = e; }
 factor(res)      ::= BRACKET_LEFT expression(e) BRACKET_RIGHT. { res = e; }
 
-assign(res)      ::= identifier(i) ASSIGN NUMBER(n). { res = i . ' = ' . n; }
-assign(res)      ::= identifier(i) ASSIGN string(s). { res = i . ' = ' . s; }
 
 
 
-statement(res)   ::= identifier(i). { res = i; }
+alphanumeric(A) ::= NUMBER(B)  .  { A = B; } // { A = yy('Literal', B); }
+alphanumeric(A) ::= string(B)  .  { A = B; } //{ A = yy('Literal', B); }
+
+statement(res)   ::= identifier(i). { res = i . ';'; }
 
 identifier(res)  ::= IDENTIFIER(i). { res = '$' . i; }
 

@@ -9,10 +9,24 @@
 
 namespace ElephantLang;
 
+use ElephantLang\Parser\Parser;
+use ElephantLang\Lexer;
 
 class Rewriter {
+
     public function rewrite($content)
     {
-        return '';
+        $lexer = new Lexer();
+        $parser = new Parser($lexer);
+        $lexer->tokenizeAll($content);
+
+        foreach($lexer->tokens as $token) {
+            //echo "Parsing {$token->symbol} Token {$token->value} \n";
+            $parser->parse($token);
+        }
+
+        $parser->parse(null);
+
+        return $parser->retvalue;
     }
 }
