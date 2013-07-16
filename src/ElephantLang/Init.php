@@ -11,9 +11,22 @@ namespace ElephantLang;
 
 
 class Init {
+    public static function init()
+    {
 
+    }
 }
 
 namespace ElephantLang\Parser;
 
-function yy
+function yy($type) {
+    $args = func_get_args();
+    array_shift($args);
+
+    $type = __NAMESPACE__.'\yy\\'.$type;
+
+    $inst = new $type;
+    $inst = call_user_func_array(array($inst, 'constructor'), $args);
+
+    return $inst;
+}

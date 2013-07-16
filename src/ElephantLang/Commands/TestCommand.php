@@ -65,7 +65,7 @@ class TestCommand extends BaseCommand
             $content = file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))) . '/tests/test.elph');
         }
 
-        $output->writeln( "<fg=green>Input value: " . $content . "</fg=green>" );
+        $output->writeln( "<fg=green>Input value:\t" . $content . "</fg=green>" );
 
         try {
             $lexer = new Lexer();
@@ -76,7 +76,7 @@ class TestCommand extends BaseCommand
             $lexer->tokenizeAll($content);
 
             foreach($lexer->tokens as $token) {
-                $output->writeln("Parsing {$token->symbol} Token {$token->value}");
+                //$output->writeln("Parsing {$token->symbol} Token {$token->value}");
                 $parser->parse($token);
             }
 
@@ -88,6 +88,6 @@ class TestCommand extends BaseCommand
         }
 
         $output->writeln('');
-        $output->writeln( "<fg=green>Return value: " . $parser->retvalue . "</fg=green>" );
+        $output->writeln( "<fg=green>Output value:\t" . $parser->retvalue . "</fg=green>" );
     }
 }

@@ -101,8 +101,10 @@ class Builder
                 '<?php' =>
                 "<?php\n\n"
                     . "namespace ElephantLang\Parser;\n\n"
-                    . "use \ArrayAccess as ArrayAccess;\n"
-                    . "\n"
+                    . "use \ArrayAccess as ArrayAccess;\n\n"
+                    . "use ElephantLang\Init as Init;\n\n"
+                    . "Init::init();\n\n"
+                    . ""
             ));
 
             // Write.

@@ -48,17 +48,20 @@
     throw new \Exception('Unexpected ' . $this->tokenName($yymajor) . '(' . $TOKEN. '), expected one of: ' . implode(',', $expect));
 }
 
-%left PLUS MINUS.
+%right PLUS MINUS.
 %left MULTIPLICATION DIVISION.
 %right AND_LITERAL.
 %right WHITESPACE NEWLINE CONCAT.
-%nonassoc ASSIGN.
+%right ASSIGN ARRAY_LEFT.
+%nonassoc UNTIL.
 
 start(res)       ::=                 . { res = yy('Block'); }
 
 start(res)       ::= expression(expr). { res = expr . ';'; }
 
 /* Unary minus or plus */
+
+expression(A) ::= value(B)        . { A = B; }
 
 statement(res)  ::= identifier(i) PLUS identifier(i2). { res = i . ' + ' . i2; }
 statement(res)  ::= NUMBER(i) PLUS identifier(i2). { res = i . ' + ' . i2; }
@@ -69,6 +72,9 @@ statement(res)  ::= identifier(i) MINUS identifier(i2). { res = i . ' - ' . i2; 
 statement(res)  ::= NUMBER(i) MINUS identifier(i2). { res = i . ' - ' . i2; }
 statement(res)  ::= identifier(i) MINUS NUMBER(i2). { res = i . ' - ' . i2; }
 statement(res)  ::= NUMBER(i) MINUS NUMBER(i2). { res = i . ' - ' . i2; }
+statement(res)  ::= statement(s1) PLUS identifier(s2). { res = s1 . ' + ' . s2; }
+
+statement(res)  ::= param(A) CONCAT IDENTIFIER(helperFunction). { res = yy('Helper', A, helperFunction); }
 
 expression(res)  ::= PLUS expression(e). { res = +e; }
 expression(res)  ::= MINUS expression(e). { res = -e; }
@@ -89,7 +95,7 @@ expression(res)  ::= statement(e) Q_ASSIGN statement(e2). { res = 'if ( empty(' 
 expression(res)  ::= expression(e) Q_ASSIGN statement(e2). { res = 'if ( empty(' . e . ') || !' . e . ' ) { ' . e . ' = ' . e2 .'; } '; }
 expression(res)  ::= statement(e) Q_ASSIGN expression(e2). { res = 'if ( empty(' . e . ') || !' . e . ' ) { ' . e . ' = ' . e2 .'; } '; }
 
-
+assign(A)        ::= assignable(B) ASSIGN expression(C)                       . { A = yy('Assign', B, C); }
 assign(res)      ::= identifier(i) ASSIGN alphanumeric(n). { res = i . ' = ' . n; }
 assign(res)      ::= identifier(i) ASSIGN statement(s). { res = i . ' = ' . s; }
 
@@ -98,10 +104,42 @@ expression(res)  ::= term(t). { res = t; }
 expression(res)  ::= expression(e1) PLUS term(t2). { res = e1 . ' + ' . t2; }
 expression(res)  ::= expression(e1) MINUS term(t2). { res = e1 . ' - ' . t2; }
 
+assignable(A) ::= simpleAssignable(B) . { A = B; }
+assignable(A) ::= array(B)            . { A = yy('Value', B); }
+
+value(A) ::= assignable(B)    . { A = B; }
+
+simpleAssignable(A) ::= identifier(B) . { A = yy('Value', B); }
+
+array(A) ::= ARRAY_LEFT ARRAY_RIGHT                      . { A = yy('Arr', array()); }
+array(A) ::= ARRAY_LEFT argList(B) optComma ARRAY_RIGHT  . { A = yy('Arr', B); }
+
+argList(A) ::= arg(B)                                                       . { A = array(B); }
+argList(A) ::= argList(B) COMMA arg(C)                                   . { A = array_merge(B, array(C)); }
+
+arg(A) ::= expression(B)  . { A = B; }
+
+term(res)        ::= IDENTIFIER(function) paramList(params). { res = function . ' (' . join(', ', params) . ')'; }
 term(res)        ::= factor(f) WHITESPACE. { res = f; }
 term(res)        ::= factor(f). { res = f; }
 term(res)        ::= term(t1) MULTIPLICATION factor(f2). { res = t1*f2; }
 term(res)        ::= term(t1) DIVISION factor(f2). { res = t1/f2; }
+
+optComma(A) ::=             . { A = ''; }
+optComma(A) ::= COMMA(B)    . { A = B; }
+
+paramList(A) ::=                                . { A = array(); }
+paramList(A) ::= param(B)                       . { A = array(B); }
+paramList(A) ::= paramList(B) COMMA param(C) . { A = array_merge(B, array(C)); }
+
+param(A) ::= paramVar(B)                          . { A = B; } /*yy('Param', B); }
+param(A) ::= paramVar(B) RANGE_EXCLUSIVE       . { A = yy('Param', B, NULL, TRUE); }
+param(A) ::= paramVar(B) EQUALS expression(C)  . { A = yy('Param', B, C); }*/
+
+paramVar(A) ::= identifier(B)   . { A = B; }
+paramVar(A) ::= NUMBER(B) . { A = B; }
+paramVar(A) ::= string(B) . { A = B; }
+
 
 //factor(res)      ::= string(s). { res = s; }
 factor(res)      ::= NUMBER(n). { res = n; }
