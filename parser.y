@@ -52,10 +52,11 @@
 %left MULTIPLICATION DIVISION.
 %right AND_LITERAL.
 %right WHITESPACE NEWLINE CONCAT.
+%nonassoc ASSIGN.
 
 start(res)       ::=                 . { res = yy('Block'); }
 
-start(res)       ::= expression(expr). { res = expr; }
+start(res)       ::= expression(expr). { res = expr . ';'; }
 
 /* Unary minus or plus */
 
@@ -72,9 +73,9 @@ statement(res)  ::= NUMBER(i) MINUS NUMBER(i2). { res = i . ' - ' . i2; }
 expression(res)  ::= PLUS expression(e). { res = +e; }
 expression(res)  ::= MINUS expression(e). { res = -e; }
 
-expression(res)  ::= statement(s1) AND_LITERAL statement(s2). { res = '( ' . s1 . ' || ' . s2 . ' )'; }
-expression(res)  ::= expression(e1) AND_LITERAL expression(e2). { res = '( ' . e1 . ' || ' . e2 . ' )'; }
-expression(res)  ::= expression(e1) AND_LITERAL statement(e2). { res = '( ' . e1 . ' || ' . e2 . ' )'; }
+expression(res)  ::= statement(s1) AND_LITERAL statement(s2). { res = s1 . ' && ' . s2; }
+expression(res)  ::= expression(e1) AND_LITERAL expression(e2). { res = e1 . ' && ' . e2; }
+expression(res)  ::= expression(e1) AND_LITERAL statement(e2). { res = e1 . ' && ' . e2; }
 
 
 expression(res)  ::= assign(a). { res = a; }
@@ -94,8 +95,8 @@ assign(res)      ::= identifier(i) ASSIGN statement(s). { res = i . ' = ' . s; }
 
 /* The common stuff */
 expression(res)  ::= term(t). { res = t; }
-expression(res)  ::= expression(e1) PLUS term(t2). { res = e1+t2; }
-expression(res)  ::= expression(e1) MINUS term(t2). { res = e1-t2; }
+expression(res)  ::= expression(e1) PLUS term(t2). { res = e1 . ' + ' . t2; }
+expression(res)  ::= expression(e1) MINUS term(t2). { res = e1 . ' - ' . t2; }
 
 term(res)        ::= factor(f) WHITESPACE. { res = f; }
 term(res)        ::= factor(f). { res = f; }
@@ -113,7 +114,7 @@ factor(res)      ::= BRACKET_LEFT expression(e) BRACKET_RIGHT. { res = e; }
 alphanumeric(A) ::= NUMBER(B)  .  { A = B; } // { A = yy('Literal', B); }
 alphanumeric(A) ::= string(B)  .  { A = B; } //{ A = yy('Literal', B); }
 
-statement(res)   ::= identifier(i). { res = i . ';'; }
+statement(res)   ::= identifier(i). { res = i; }
 
 identifier(res)  ::= IDENTIFIER(i). { res = '$' . i; }
 

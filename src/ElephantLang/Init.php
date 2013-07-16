@@ -13,3 +13,7 @@ namespace ElephantLang;
 class Init {
 
 }
+
+namespace ElephantLang\Parser;
+
+function yy
