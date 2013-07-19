@@ -1,33 +1,32 @@
 <?php
 
-use ElephantLang\Rewriter;
 
-class RewriterTest extends \PHPUnit_Framework_TestCase
+class RewriterTest extends ElephantLangTest
 {
-    /**
-     * @var ElephantLang\Rewriter
-     */
-    private $rewriter;
 
-    public function __construct()
-    {
-        $this->rewriter = new Rewriter();
-    }
     public function testSimpleAssign()
     {
-        $this->assertEquals('$a = "b"', $this->rewriter->rewrite('a = "b"'));
-        $this->assertEquals('$c = $a;', $this->rewriter->rewrite('c=a'));
+        $this->rewriteTest('$a = "b";', 'a = "b"');
+        $this->rewriteTest('$c = $a;', 'c=a');
+        $this->rewriteTest('$c = $a + 2;', 'c=a+2');
+        $this->rewriteTest('$c = 2 + $a;', 'c=2+a');
+        $this->rewriteTest('$c = 2 + $a + $b;', 'c=2+a+b');
+        $this->rewriteTest('$c = 2 + 1 + 3;', 'c=2+1+3');
     }
 
     public function testArithmeticOperations()
     {
-        $this->assertEquals('$a = 2 + 3', $this->rewriter->rewrite('a = 2 + 3'));
+        $this->rewriteTest('$a = 2 + 3;', 'a = 2 + 3');
     }
 
-    /*
-    public function test()
+    public function testFunctionCall()
     {
-        $this->assertEquals('$length = mb_strlen(\'text\')', $this->rewriter->rewrite("lenght = 'text'.lenght"));
+        $this->rewriteTest('functionName(param1, param2);', 'fName param1, param2');
     }
-    */
+
+    public function testHelpers()
+    {
+        $this->rewriteTest('$length = mb_strlen(\'text\')', "lenght = 'text'.lenght");
+    }
+
 }

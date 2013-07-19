@@ -117,6 +117,7 @@ class LexerPattern extends BaseLexerPattern
         $this->addRule('FUNCTION', 'function');
         $this->addRule('RETURN', 'return');
         $this->addRule('NEW', 'new');
+        $this->addRule('UNTIL', 'until');
 
         //deref
         $this->addRule('DEREF', '-\>');
