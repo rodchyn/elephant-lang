@@ -13,7 +13,8 @@
     private $lex;
     private $internalError = false;
 
-    function __construct($lex) {
+    function __construct($lex)
+    {
         $this->lex = $lex;
     }
 
@@ -35,7 +36,6 @@
 
 %syntax_error
 {
-
     $this->internalError = true;
     //echo "Syntax Error on line " . $this->lex->line . ": token '" . $this->lex->value . "' count ".$this->lex->counter." while parsing rule: ";
     foreach ($this->yystack as $entry) {
@@ -55,13 +55,12 @@
 %right ASSIGN ARRAY_LEFT.
 %nonassoc UNTIL.
 
-start(res)       ::=                 . { res = yy('Block'); }
-
-start(res)       ::= expression(expr). { res = expr . ';'; }
+start(res)      ::=                 . { res = yy('Block'); }
+start(res)      ::= expression(expr). { res = expr . ';'; }
 
 /* Unary minus or plus */
 
-expression(A) ::= value(B)        . { A = B; }
+expression(A)   ::= value(B)        . { A = B; }
 
 statement(res)  ::= identifier(i) PLUS identifier(i2). { res = i . ' + ' . i2; }
 statement(res)  ::= NUMBER(i) PLUS identifier(i2). { res = i . ' + ' . i2; }

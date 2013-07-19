@@ -13,10 +13,11 @@
     ],
     "require": {
         "php": ">=5.3",
-        "symfony/console": "*"
+        "symfony/console": "@stable"
     },
     "autoload": {
         "psr-0": {"ElephantLang\\": "src/"},
         "files": ["autoload.php"]
-    }
+    },
+    "prefer-stable": true
 }
