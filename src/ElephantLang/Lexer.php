@@ -2,6 +2,8 @@
 
 namespace ElephantLang;
 
+use Exception;
+
 class Lexer
 {
     private $regex1 = null;
@@ -57,8 +59,9 @@ class Lexer
         //match all patterns
         $matches=null;
         $result=preg_match_all($this->lexerPattern,$this->text,$matches,PREG_SET_ORDER|PREG_OFFSET_CAPTURE);
-        if($result===FALSE)
+        if($result===FALSE) {
             throw new Exception("Error compiling lexer pattern:\n{$this->lexerPattern}\n");
+        }
 
         //turn matches into tokens
         $this->tokens=array();

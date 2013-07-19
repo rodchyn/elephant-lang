@@ -25,12 +25,18 @@ class TestCommand extends BaseCommand
         $this
             ->setName('test:parser')
             ->setDescription('Test generated parser on test file')
-
+            ->addArgument('raw', InputArgument::OPTIONAL, 'Raw code to test')
             ->addOption(
                 'file',
                 null,
                 InputOption::VALUE_NONE,
                 'If set, parser will use custom file to parse instead of test.elph'
+            )
+            ->addOption(
+                'debug',
+                null,
+                InputOption::VALUE_NONE,
+                'If set, parser will generate debug info'
             );
     }
 
@@ -52,18 +58,25 @@ class TestCommand extends BaseCommand
             $file = $input->getOption('file');
         }
 
-        $example = file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))) . '/tests/test.elph');
+        $raw = $input->getArgument('raw');
+        if($raw) {
+            $content = $raw;
+        } else {
+            $content = file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))) . '/tests/test.elph');
+        }
 
-        $output->writeln( "<fg=green>Input value: " . $example . "</fg=green>" );
+        $output->writeln( "<fg=green>Input value:\t" . $content . "</fg=green>" );
 
         try {
             $lexer = new Lexer();
             $parser = new Parser($lexer);
-            //Parser::Trace(fopen('php://output', 'w'), 'Trace: ');
-            $lexer->tokenizeAll($example);
+            if($input->getOption('debug')) {
+                Parser::Trace(fopen('php://output', 'w'), 'Trace: ');
+            }
+            $lexer->tokenizeAll($content);
 
             foreach($lexer->tokens as $token) {
-                $output->writeln("Parsing {$token->symbol} Token {$token->value}");
+                //$output->writeln("Parsing {$token->symbol} Token {$token->value}");
                 $parser->parse($token);
             }
 
@@ -75,6 +88,6 @@ class TestCommand extends BaseCommand
         }
 
         $output->writeln('');
-        $output->writeln( "<fg=green>Return value: " . $parser->retvalue . "</fg=green>" );
+        $output->writeln( "<fg=green>Output value:\t" . $parser->retvalue . "</fg=green>" );
     }
 }
