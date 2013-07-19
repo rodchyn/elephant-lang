@@ -1,2 +1,9 @@
 #PHPStorm files
 .idea
+
+#vendor files
+vendor/
+
+#temporary parser files
+nohup.out
+parser.out
