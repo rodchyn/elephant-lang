@@ -21,7 +21,7 @@ class RewriterTest extends ElephantLangTest
 
     public function testFunctionCall()
     {
-        $this->rewriteTest('functionName(param1, param2);', 'fName param1, param2');
+        $this->rewriteTest('fName ($param1, $param2);', 'fName param1, param2');
     }
 
     public function testHelpers()
