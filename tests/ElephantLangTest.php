@@ -1,11 +1,11 @@
 <?php
 
-use ElephantLang\Rewriter;
+use Rodchyn\ElephantLang\Rewriter;
 
 abstract class ElephantLangTest  extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ElephantLang\Rewriter
+     * @var Rodchyn\ElephantLang\Rewriter
      */
     protected $rewriter;
 

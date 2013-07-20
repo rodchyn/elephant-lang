@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace ElephantLang\Parser;
+namespace Rodchyn\ElephantLang\Parser;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
@@ -27,7 +27,7 @@ class Builder
     /**
      * @var string
      */
-    private $target = 'src/ElephantLang/Parser/Parser.php';
+    private $target = 'src/Parser/Parser.php';
 
     /**
      * Set grammar source file to build parser from it
@@ -100,9 +100,9 @@ class Builder
             $content = strtr($content, array(
                 '<?php' =>
                 "<?php\n\n"
-                    . "namespace ElephantLang\Parser;\n\n"
+                    . "namespace Rodchyn\ElephantLang\Parser;\n\n"
                     . "use \ArrayAccess as ArrayAccess;\n\n"
-                    . "use ElephantLang\Init as Init;\n\n"
+                    . "use Rodchyn\ElephantLang\Init as Init;\n\n"
                     . "Init::init();\n\n"
                     . ""
             ));

@@ -1,10 +1,10 @@
 <?php
 
-namespace ElephantLang\Parser;
+namespace Rodchyn\ElephantLang\Parser;
 
 use \ArrayAccess as ArrayAccess;
 
-use ElephantLang\Init as Init;
+use Rodchyn\ElephantLang\Init as Init;
 
 Init::init();
 

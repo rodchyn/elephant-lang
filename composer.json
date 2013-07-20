@@ -15,8 +15,13 @@
         "php": ">=5.3",
         "symfony/console": "@stable"
     },
+    "require-dev": {
+        "symfony/dependency-injection": "*"
+    },
+    "target-dir": "Rodchyn/ElephantLang",
     "autoload": {
-        "psr-0": {"ElephantLang\\": "src/"},
+        "psr-0": {"Rodchyn\ElephantLang\\": "src/"},
+        "classmap": ["lib/"],
         "files": ["autoload.php"]
     },
     "prefer-stable": true

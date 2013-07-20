@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace ElephantLang\Parser\yy;
+namespace Rodchyn\ElephantLang\Parser\yy;
 
 
 class Helper {

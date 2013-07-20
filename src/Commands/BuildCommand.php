@@ -7,9 +7,9 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace ElephantLang\Commands;
+namespace Rodchyn\ElephantLang\Commands;
 
-use ElephantLang\Parser\Builder;
+use Rodchyn\ElephantLang\Parser\Builder;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace ElephantLang;
+namespace Rodchyn\ElephantLang;
 
 class TextLines
 {

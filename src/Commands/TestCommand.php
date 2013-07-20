@@ -7,11 +7,11 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace ElephantLang\Commands;
+namespace Rodchyn\ElephantLang\Commands;
 
-use ElephantLang\Parser\Builder;
-use ElephantLang\Lexer;
-use ElephantLang\Parser\Parser;
+use Rodchyn\ElephantLang\Parser\Builder;
+use Rodchyn\ElephantLang\Lexer;
+use Rodchyn\ElephantLang\Parser\Parser;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,15 +42,6 @@ class TestCommand extends BaseCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /*
-        $name = $input->getArgument('name');
-        if ($name) {
-            $text = 'Hello ' . $name;
-        } else {
-            $text = 'Hello';
-        }
-
-        */
 
         $file = 'test.elph';
 

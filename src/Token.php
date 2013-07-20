@@ -1,8 +1,8 @@
 <?php
 
-namespace ElephantLang;
+namespace Rodchyn\ElephantLang;
 
-use ElephantLang\Parser\Parser;
+use Rodchyn\ElephantLang\Parser\Parser;
 
 class Token implements \ArrayAccess
 {

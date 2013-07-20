@@ -5,8 +5,8 @@
 
 require 'tests/bootstrap.php';
 
-use ElephantLang\Commands\BuildCommand;
-use ElephantLang\Commands\TestCommand;
+use Rodchyn\ElephantLang\Commands\BuildCommand;
+use Rodchyn\ElephantLang\Commands\TestCommand;
 use Symfony\Component\Console\Application;
 
 $application = new Application();

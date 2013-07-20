@@ -7,10 +7,10 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace ElephantLang;
+namespace Rodchyn\ElephantLang;
 
-use ElephantLang\Parser\Parser;
-use ElephantLang\Lexer;
+use Rodchyn\ElephantLang\Parser\Parser;
+use Rodchyn\ElephantLang\Lexer;
 
 class Rewriter {
 

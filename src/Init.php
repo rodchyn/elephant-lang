@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace ElephantLang;
+namespace Rodchyn\ElephantLang;
 
 
 class Init {
@@ -17,7 +17,7 @@ class Init {
     }
 }
 
-namespace ElephantLang\Parser;
+namespace Rodchyn\ElephantLang\Parser;
 
 function yy($type) {
     $args = func_get_args();
