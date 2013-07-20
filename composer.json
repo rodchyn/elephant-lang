@@ -20,7 +20,7 @@
     },
     "target-dir": "Rodchyn/ElephantLang",
     "autoload": {
-        "psr-0": {"Rodchyn\ElephantLang\\": "src/"},
+        "psr-0": {"Rodchyn\\ElephantLang\\": "src/"},
         "classmap": ["lib/"],
         "files": ["autoload.php"]
     },
